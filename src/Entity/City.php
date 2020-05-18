@@ -7,10 +7,16 @@ use App\Repository\CityRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CityRepository::class)
  * @ApiResource(
+ *     subresourceOperations={
+ *          "api_city_get_subresource"={
+ *              "normalization_context"={"groups"={"city"}}
+ *        }
+ *     },
  *     collectionOperations={"GET","POST"},
  *     itemOperations={"GET","PUT","DELETE"},
  * )
@@ -21,21 +27,25 @@ class City
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"city:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"city:read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"city:read"})
      */
     private $map;
 
     /**
      * @ORM\ManyToOne(targetEntity=Country::class, inversedBy="cities")
+     * @Groups({"city:read"})
      */
     private $country;
 

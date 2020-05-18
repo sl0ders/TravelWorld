@@ -2,11 +2,22 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\SmileyRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=SmileyRepository::class)
+ * @ApiResource(
+ *     subresourceOperations={
+ *          "api_smileys_get_subresource"={
+ *              "normalization_context"={"groups"={"smileys:read"}}
+ *        }
+ *     },
+ *     collectionOperations={"GET","POST"},
+ *     itemOperations={"GET","PUT","DELETE"},
+ * )
  */
 class Smiley
 {
@@ -14,21 +25,25 @@ class Smiley
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"smileys:read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Icons::class, inversedBy="smileys")
+     * @Groups({"smileys:read"})
      */
     private $icon;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="smileys")
+     * @Groups({"smileys:read"})
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity=Picture::class, inversedBy="smileys")
+     * @Groups({"smileys:read"})
      */
     private $picture;
 

@@ -4,9 +4,18 @@ namespace App\Entity;
 
 use App\Repository\CommentRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=CommentRepository::class)
+  *     subresourceOperations={
+ *          "api_comments_get_subresource"={
+ *              "normalization_context"={"groups"={"comments:read"}}
+ *        }
+ *     },
+ *     collectionOperations={"GET","POST"},
+ *     itemOperations={"GET","PUT","DELETE"},
+ * )
  */
 class Comment
 {
@@ -14,36 +23,43 @@ class Comment
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"comments:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="text")
+     * @Groups({"comments:read"})
      */
     private $content;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="comments")
+     * @Groups({"comments:read"})
      */
     private $user;
 
     /**
      * @ORM\Column(type="smallint")
+     * @Groups({"comments:read"})
      */
     private $enable;
 
     /**
      * @ORM\ManyToOne(targetEntity=Picture::class, inversedBy="comments")
+     * @Groups({"comments:read"})
      */
     private $picture;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"comments:read"})
      */
     private $parentId;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"comments:read"})
      */
     private $createdAt;
 

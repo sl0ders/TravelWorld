@@ -7,9 +7,19 @@ use App\Repository\PictureRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\PictureRepository")
+ * @ApiResource(
+ *     subresourceOperations={
+ *          "api_pictures_get_subresource"={
+ *              "normalization_context"={"groups"={"pictures:read"}}
+ *        }
+ *     },
+ *     collectionOperations={"GET","POST"},
+ *     itemOperations={"GET","PUT","DELETE"},
+ * )
  */
 class Picture
 {
@@ -17,52 +27,62 @@ class Picture
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"pictures:read"})
      */
     private $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="pictures")
+     * @Groups({"pictures:read"})
      */
     private $author;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"pictures:read"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="text", nullable=true)
+     * @Groups({"pictures:read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"pictures:read"})
      */
     private $createdAt;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
+     * @Groups({"pictures:read"})
      */
     private $taken_at;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"pictures:read"})
      */
     private $url;
 
     /**
      * @ORM\ManyToOne(targetEntity=City::class, inversedBy="pictures")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"pictures:read"})
      */
     private $city;
 
     /**
      * @ORM\OneToMany(targetEntity=Comment::class, mappedBy="picture")
+     * @Groups({"pictures:read"})
      */
     private $comments;
 
     /**
      * @ORM\OneToMany(targetEntity=Smiley::class, mappedBy="picture")
+     * @Groups({"pictures:read"})
      */
     private $smileys;
 

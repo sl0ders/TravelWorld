@@ -2,14 +2,17 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @ApiResource(normalizationContext={"groups"={"user:read"}})
  */
 class User implements UserInterface
 {
@@ -17,16 +20,19 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"pictures:read", "smileys:read","comments:read","user:read"})
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"pictures:read", "smileys:read","comments:read","user:read"})
      */
     private $email;
 
     /**
      * @ORM\Column(type="json")
+     * @Groups({"pictures:read", "smileys:read","comments:read","user:read"})
      */
     private $roles = [];
 
@@ -38,16 +44,19 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"pictures:read", "smileys:read","comments:read","user:read"})
      */
     private $firstname;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"pictures:read", "smileys:read","comments:read","user:read"})
      */
     private $lastname;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"pictures:read", "smileys:read","comments:read","user:read"})
      */
     private $createdAt;
 
@@ -58,6 +67,7 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\News", mappedBy="author")
+     * @Groups({"pictures:read", "smileys:read","comments:read","user:read"})
      */
     private $news;
 
